@@ -8,6 +8,7 @@ import Home from '../views/Home';
 import AboutUs from '../views/AboutUs';
 import Services from '../views/Services';   
 import Products from '../views/Products';
+import LoginApp from '../views/LoginApp';
 
 
 export const AppRouter = () => {
@@ -21,6 +22,7 @@ export const AppRouter = () => {
           <Route path='/services' element={<Services />} />
           <Route path='/user-profile' element={<UserProfile />} />
           <Route path='/products' element={<Products />} />
+          <Route path='/login' element={<LoginApp />} />
         </Route>
 
         {/* Admin routes */}

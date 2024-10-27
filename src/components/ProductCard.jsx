@@ -2,9 +2,11 @@ import React, { useEffect } from "react";
 import { useApi } from "../context/ApiContext";
 import Skeleton_mesh from '../components/SkeletonMesh';
 
+
 const ProductCard = () => {
   const { data, loading, error, fetchData } = useApi();
-
+  
+  
   useEffect(() => {
     fetchData("/products"); // Endpoint de la API que deseas consultar
   }, []);
@@ -13,6 +15,7 @@ const ProductCard = () => {
   
   if (error) return <div>Error: {error}</div>;
 
+  
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3" >
       {data &&
