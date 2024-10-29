@@ -3,7 +3,7 @@ import axios from "axios";
 
 // Configuración global de Axios
 axios.defaults.baseURL = 'https://fakestoreapi.com/';
-axios.defaults.headers.common['Authorization'] = 'Bearer AUTH_TOKEN';
+// axios.defaults.headers.common['Authorization'] = 'Bearer AUTH_TOKEN';
 
 // Definición del reducer
 const apiReducer = (state, action) => {
