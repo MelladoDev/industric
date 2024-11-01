@@ -12,7 +12,7 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
-    console.log("Submitting form..."); //logs when the form is submitted
+    console.log("Submitting form..."); 
 
     const isEmail = userInput.includes("@");
     const loginData = isEmail
