@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { FileInput, Label, Button, Card } from "flowbite-react";
 
 const ProductForm = () => {
+    
   const [productData, setProductData] = useState({
     nombre: "",
     imagen_url: "",
@@ -12,30 +13,49 @@ const ProductForm = () => {
     stock: "",
   });
 
+  const [imageFile, setImageFile] = useState(null);
+  const [uploadSuccess, setUploadSuccess] = useState(false);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setProductData({ ...productData, [name]: value });
   };
 
+  const handleFileChange = (e) => {
+    setImageFile(e.target.files[0]);
+  };
+  const uploadImage = async (file) => {
+    const formData = new FormData();
+    formData.append("image", file);
+    formData.append("key", "3c5d91d36628da66ffa816f9efc310d1");
+  
+    try {
+      const response = await fetch("https://api.imgbb.com/1/upload", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await response.json();
+      setUploadSuccess(true); // Cambia el estado de éxito
+      return data.data.url;
+    } catch (error) {
+      console.error("Error al subir la imagen:", error);
+      setUploadSuccess(false);
+    }
+  };
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const createdProduct = await createProduct(productData);
-      console.log("Producto creado con éxito:", createdProduct);
-
+      if (imageFile) {
+        const imageUrl = await uploadImage(imageFile);
+        await createProduct({ ...productData, imagen_url: imageUrl });
+        console.log("Producto creado con éxito");
+      }
     } catch (error) {
       console.error("Error al crear el producto:", error);
     }
   };
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setProductData({ ...productData, imagen_url: imageUrl });
-    }
-  };
-
   return (
     <Card className="max-w-5xl p-5">
       <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
@@ -82,9 +102,14 @@ const ProductForm = () => {
                 SVG, PNG, JPG or GIF (MAX. 800x400px)
               </p>
             </div>
-            <FileInput id="dropzone-file" className="hidden" onChange={handleFileChange} />
+            <FileInput
+              id="dropzone-file"
+              className="hidden"
+              onChange={handleFileChange}
+            />
           </Label>
         </div>
+        {uploadSuccess && <p className="text-green-500 mb-4">Imagen subida con éxito.</p>} {/* Mensaje de éxito */}
 
         <Label htmlFor="descripcion" value="Descripción" />
         <textarea
